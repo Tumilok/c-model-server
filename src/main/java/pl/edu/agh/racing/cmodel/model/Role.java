@@ -1,21 +1,19 @@
 package pl.edu.agh.racing.cmodel.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public enum Role {
+    ADMIN ("admin"),
+    MODERATOR ("moderator"),
+    USER ("user"),
+    NEWBIE ("newbie"),
+    ;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+    private final String role;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String role;
+    Role(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
 }

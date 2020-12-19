@@ -26,7 +26,5 @@ public class User {
     @NotBlank(message = "Password is required")
     private String password;
     private boolean isActivated;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roleId", referencedColumnName = "id")
     private Role role;
 }
