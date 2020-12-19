@@ -14,7 +14,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Token {
+public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
