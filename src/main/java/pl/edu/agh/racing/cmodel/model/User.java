@@ -26,5 +26,6 @@ public class User {
     @NotBlank(message = "Password is required")
     private String password;
     private boolean isActivated;
+    @Enumerated(EnumType.STRING)
     private Role role;
 }
