@@ -1,10 +1,10 @@
 package pl.edu.agh.racing.cmodel.model;
 
 public enum Role {
-    ADMIN ("admin"),
-    MODERATOR ("moderator"),
-    USER ("user"),
-    NEWBIE ("newbie"),
+    ADMIN ("ROLE_ADMIN"),
+    MODERATOR ("ROLE_MODERATOR"),
+    USER ("ROLE_USER"),
+    NEWBIE ("ROLE_NEWBIE"),
     ;
 
     private final String role;

@@ -1,9 +1,9 @@
 package pl.edu.agh.racing.cmodel.model;
 
 public enum  Operation {
-    ADD ("add"),
-    UPDATE ("update"),
-    DELETE ("delete"),
+    ADD ("ADD"),
+    UPDATE ("UPDATE"),
+    DELETE ("DELETE"),
     ;
 
     private final String operation;
