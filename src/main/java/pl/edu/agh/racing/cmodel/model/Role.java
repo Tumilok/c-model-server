@@ -1,5 +1,7 @@
 package pl.edu.agh.racing.cmodel.model;
 
+import java.util.stream.Stream;
+
 public enum Role {
     ADMIN ("ROLE_ADMIN"),
     MODERATOR ("ROLE_MODERATOR"),
@@ -15,5 +17,12 @@ public enum Role {
 
     public String getRole() {
         return role;
+    }
+
+    public static Role of(String role) {
+        return Stream.of(Role.values())
+                .filter(r -> r.getRole().equals(role))
+                .findFirst()
+                .orElseThrow(IllegalAccessError::new);
     }
 }
