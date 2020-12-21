@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Data
@@ -15,9 +16,16 @@ import java.time.Instant;
 public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(unique = true, updatable = false)
     private Long id;
+
+    @NotNull
     private String token;
+
+    @NotNull
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @NotNull
     private Instant expiryDate;
 }
