@@ -19,38 +19,38 @@ public class Simulation {
     private Long id;
 
     @NotBlank(message = "Name is required")
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String fw;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String rw;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String s;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String diff;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String u;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String n;
 
     @Column(precision = 1)
     private double df;
 
     @Column(precision = 1)
-    private String d;
+    private double d;
 
     @Column(precision = 1)
-    private String balance;
+    private double balance;
 
     @Column(precision = 3)
-    private String mrfChlodnica;
+    private double mrfChlodnica;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
