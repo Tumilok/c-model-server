@@ -41,16 +41,16 @@ public class Simulation {
     private String n;
 
     @Column(precision = 1)
-    private double df;
+    private Double df;
 
     @Column(precision = 1)
-    private double d;
+    private Double d;
 
     @Column(precision = 1)
-    private double balance;
+    private Double balance;
 
     @Column(precision = 3)
-    private double mrfChlodnica;
+    private Double mrfChlodnica;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

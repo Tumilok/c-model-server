@@ -18,5 +18,6 @@ public class Status {
     private Long id;
 
     @NotBlank(message = "Status is required")
+    @Column(unique = true, length = 50)
     private String status;
 }
