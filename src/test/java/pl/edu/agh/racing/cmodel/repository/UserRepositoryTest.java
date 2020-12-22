@@ -19,7 +19,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    public void checkSaveUser() {
+    public void shouldSaveUser() {
         // given
         User user1 = new User(null, "John", "Peterson",
                 "john.peterson@gmail.com", "12345678", false, Role.NEWBIE);
