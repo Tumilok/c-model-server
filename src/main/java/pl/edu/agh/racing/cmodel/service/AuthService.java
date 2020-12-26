@@ -7,14 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.racing.cmodel.dto.NotificationEmailDto;
 import pl.edu.agh.racing.cmodel.dto.response.AuthenticationResponse;
 import pl.edu.agh.racing.cmodel.dto.request.LoginRequest;
 import pl.edu.agh.racing.cmodel.dto.request.RegisterRequest;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
-import pl.edu.agh.racing.cmodel.model.NotificationEmail;
-import pl.edu.agh.racing.cmodel.model.Role;
-import pl.edu.agh.racing.cmodel.model.User;
-import pl.edu.agh.racing.cmodel.model.VerificationToken;
+import pl.edu.agh.racing.cmodel.model.*;
+import pl.edu.agh.racing.cmodel.repository.RoleRepository;
 import pl.edu.agh.racing.cmodel.repository.UserRepository;
 import pl.edu.agh.racing.cmodel.repository.VerificationTokenRepository;
 import pl.edu.agh.racing.cmodel.security.jwt.JwtProvider;
@@ -22,7 +21,9 @@ import pl.edu.agh.racing.cmodel.security.jwt.JwtProvider;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -35,6 +36,7 @@ public class AuthService {
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final RoleRepository roleRepository;
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
@@ -43,15 +45,19 @@ public class AuthService {
                 .surname(registerRequest.getSurname())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .enabled(false)
-                .role(Role.NEWBIE)
+                .roles(getInitialSetOfRoles())
                 .build();
 
         userRepository.save(user);
 
         String token = generateVerificationToken(user);
-        mailService.sendMail(new NotificationEmail("Please Activate Your Account",
+        mailService.sendMail(new NotificationEmailDto("Please Activate Your Account",
                 user.getEmail(), "http://localhost:8081/api/auth/accountVerification/" + token));
+    }
+
+    private Set<Role> getInitialSetOfRoles() {
+        return Set.of(roleRepository.findRoleByRole(ERole.ROLE_NEWBIE)
+                .orElse(roleRepository.save(new Role(null, ERole.ROLE_NEWBIE, new HashSet<>()))));
     }
 
     private String generateVerificationToken(User user) {
