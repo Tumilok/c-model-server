@@ -1,4 +1,4 @@
-package pl.edu.agh.racing.cmodel.service;
+package pl.edu.agh.racing.cmodel.security.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

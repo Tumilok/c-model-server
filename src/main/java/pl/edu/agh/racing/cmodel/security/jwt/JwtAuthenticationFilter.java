@@ -1,4 +1,4 @@
-package pl.edu.agh.racing.cmodel.security;
+package pl.edu.agh.racing.cmodel.security.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

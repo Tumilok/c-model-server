@@ -1,4 +1,4 @@
-package pl.edu.agh.racing.cmodel.config;
+package pl.edu.agh.racing.cmodel.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.edu.agh.racing.cmodel.security.JwtAuthenticationFilter;
+import pl.edu.agh.racing.cmodel.security.jwt.JwtAuthenticationFilter;
 
 @EnableWebSecurity
 @AllArgsConstructor

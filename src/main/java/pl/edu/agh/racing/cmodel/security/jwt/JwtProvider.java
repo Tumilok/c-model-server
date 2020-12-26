@@ -1,4 +1,4 @@
-package pl.edu.agh.racing.cmodel.security;
+package pl.edu.agh.racing.cmodel.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package pl.edu.agh.racing.cmodel.dto;
+package pl.edu.agh.racing.cmodel.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

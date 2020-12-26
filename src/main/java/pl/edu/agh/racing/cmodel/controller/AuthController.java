@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.agh.racing.cmodel.dto.AuthenticationResponse;
-import pl.edu.agh.racing.cmodel.dto.LoginRequest;
-import pl.edu.agh.racing.cmodel.dto.RegisterRequest;
+import pl.edu.agh.racing.cmodel.dto.response.AuthenticationResponse;
+import pl.edu.agh.racing.cmodel.dto.request.LoginRequest;
+import pl.edu.agh.racing.cmodel.dto.request.RegisterRequest;
 import pl.edu.agh.racing.cmodel.service.AuthService;
 
 @RestController
