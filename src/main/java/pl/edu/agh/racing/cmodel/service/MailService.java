@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
-import pl.edu.agh.racing.cmodel.model.NotificationEmail;
+import pl.edu.agh.racing.cmodel.dto.NotificationEmailDto;
 
 @Service
 @AllArgsConstructor
@@ -20,19 +20,19 @@ public class MailService {
     private final MailContentBuilder mailContentBuilder;
 
     @Async
-    public void sendMail(NotificationEmail notificationEmail) {
+    public void sendMail(NotificationEmailDto notificationEmailDto) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("cmodelapp@email.com");
-            messageHelper.setTo(notificationEmail.getRecipient());
-            messageHelper.setSubject(notificationEmail.getSubject());
-            messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()));
+            messageHelper.setTo(notificationEmailDto.getRecipient());
+            messageHelper.setSubject(notificationEmailDto.getSubject());
+            messageHelper.setText(mailContentBuilder.build(notificationEmailDto.getBody()));
         };
         try {
             mailSender.send(messagePreparator);
             log.info("Activation email sent!");
         } catch (MailException e) {
-            throw new CModelException("Exception occurred when sending mail to " + notificationEmail.getRecipient());
+            throw new CModelException("Exception occurred when sending mail to " + notificationEmailDto.getRecipient());
         }
     }
 }
