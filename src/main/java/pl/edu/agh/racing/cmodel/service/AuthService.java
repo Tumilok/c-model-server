@@ -1,8 +1,14 @@
 package pl.edu.agh.racing.cmodel.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.racing.cmodel.dto.AuthenticationResponse;
+import pl.edu.agh.racing.cmodel.dto.LoginRequest;
 import pl.edu.agh.racing.cmodel.dto.RegisterRequest;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
 import pl.edu.agh.racing.cmodel.model.NotificationEmail;
@@ -11,6 +17,7 @@ import pl.edu.agh.racing.cmodel.model.User;
 import pl.edu.agh.racing.cmodel.model.VerificationToken;
 import pl.edu.agh.racing.cmodel.repository.UserRepository;
 import pl.edu.agh.racing.cmodel.repository.VerificationTokenRepository;
+import pl.edu.agh.racing.cmodel.security.JwtProvider;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
@@ -26,6 +33,8 @@ public class AuthService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
@@ -69,5 +78,13 @@ public class AuthService {
                 .orElseThrow(() -> new CModelException("User not found with email: " + email));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    public AuthenticationResponse login(LoginRequest loginRequest) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+                loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        String token = jwtProvider.generateToken(authenticate);
+        return new AuthenticationResponse(token, loginRequest.getEmail());
     }
 }
