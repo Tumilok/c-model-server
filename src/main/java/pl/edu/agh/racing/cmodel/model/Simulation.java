@@ -1,14 +1,21 @@
 package pl.edu.agh.racing.cmodel.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -56,4 +63,13 @@ public class Simulation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
+
+    @OneToMany(mappedBy = "simulation")
+    private Set<Log> logs = new HashSet<>();
+
+    @CreationTimestamp
+    private Instant createDateTime;
+
+    @UpdateTimestamp
+    private Instant updateDateTime;
 }

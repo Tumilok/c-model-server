@@ -1,28 +1,30 @@
 package pl.edu.agh.racing.cmodel.model;
 
-import java.util.stream.Stream;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public enum Role {
-    ADMIN ("ROLE_ADMIN"),
-    MODERATOR ("ROLE_MODERATOR"),
-    USER ("ROLE_USER"),
-    NEWBIE ("ROLE_NEWBIE"),
-    ;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
-    private final String role;
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(unique = true, updatable = false)
+    private Long id;
 
-    Role(String role) {
-        this.role = role;
-    }
+    @NotBlank(message = "Role is required")
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 
-    public String getRole() {
-        return role;
-    }
-
-    public static Role of(String role) {
-        return Stream.of(Role.values())
-                .filter(r -> r.getRole().equals(role))
-                .findFirst()
-                .orElseThrow(IllegalAccessError::new);
-    }
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
 }
