@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-
 @Service
 @AllArgsConstructor
 public class MailContentBuilder {
@@ -17,5 +16,4 @@ public class MailContentBuilder {
         context.setVariable("message", message);
         return templateEngine.process("mailTemplate", context);
     }
-
 }
