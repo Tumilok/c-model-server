@@ -7,10 +7,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
 @Entity
 public class Role {
     @Id
@@ -22,6 +22,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private ERole role;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 }
