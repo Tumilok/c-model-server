@@ -1,7 +1,6 @@
 package pl.edu.agh.racing.cmodel.security.jwt;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@AllArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtProvider jwtProvider;
-    @Qualifier("userDetailsServiceImpl")
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final JwtProvider jwtProvider;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -32,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String jwt = getJwtFromRequest(request);
 
-        if (StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)) {
+        if (StringUtils.hasText(jwt) && jwtProvider.validateJwtToken(jwt)) {
             String username = jwtProvider.getUsernameFromJwt(jwt);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);

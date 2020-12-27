@@ -38,6 +38,8 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RoleRepository roleRepository;
 
+    // TODO: Check if email is email of AGH Racing team
+
     @Transactional
     public void signup(RegisterRequest registerRequest) {
         User user = User.builder()
@@ -90,7 +92,7 @@ public class AuthService {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        String token = jwtProvider.generateToken(authenticate);
+        String token = jwtProvider.generateJwtToken(authenticate);
         return new AuthenticationResponse(token, loginRequest.getEmail());
     }
 }
