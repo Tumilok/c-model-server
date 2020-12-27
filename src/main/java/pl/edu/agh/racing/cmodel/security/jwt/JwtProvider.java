@@ -1,31 +1,37 @@
 package pl.edu.agh.racing.cmodel.security.jwt;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
 import pl.edu.agh.racing.cmodel.security.service.UserDetailsImpl;
 
-import static io.jsonwebtoken.Jwts.parser;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Service
+@AllArgsConstructor
 public class JwtProvider {
 
-    // TODO: Move jwtSecret to the application.properties file
-
-    private final String jwtSecret = "someSecretKeyVerySecretsomeSecretKeyVerySecretsomeSecretKeyVerySecretsomeSecretKeyVerySecretsomeSecretKeyVerySecret";
+    private final JwtConfig jwtConfig;
 
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject((principal.getUsername()))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setSubject(principal.getUsername())
+                .claim("authorities", authentication.getAuthorities())
+                .setIssuedAt(new Date())
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
+                .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes()))
                 .compact();
     }
 
     public String getUsernameFromJwt(String token) {
-        Claims claims = parser()
-                .setSigningKey(jwtSecret)
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(jwtConfig.getSecretKey().getBytes())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -34,7 +40,10 @@ public class JwtProvider {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(jwtConfig.getSecretKey().getBytes())
+                    .build()
+                    .parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException e) {
             throw new CModelException("Invalid JWT token", e.getCause());
