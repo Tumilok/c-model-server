@@ -23,7 +23,7 @@ public class JwtProvider {
                 .setSubject(principal.getUsername())
                 .claim("authorities", authentication.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getExpirationTimeInDays())))
                 .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes()))
                 .compact();
     }
