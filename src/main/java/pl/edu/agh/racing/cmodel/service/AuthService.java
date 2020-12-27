@@ -40,10 +40,12 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RoleRepository roleRepository;
 
-    // TODO: Check if email is email of AGH Racing team
-
     @Transactional
     public void signup(RegisterRequest registerRequest) {
+        if (!isMailOfRacingTeam(registerRequest.getEmail())) {
+            throw new CModelException("Email doesn't belong to the AGH racing team '@racing.agh.edu.pl'");
+        }
+
         User user = User.builder()
                 .name(registerRequest.getName())
                 .surname(registerRequest.getSurname())
@@ -59,6 +61,10 @@ public class AuthService {
                 user.getEmail(), "http://localhost:8081/api/auth/accountVerification/" + token));
     }
 
+    private boolean isMailOfRacingTeam(String email) {
+        return email.contains("@racing.agh.edu.pl");
+    }
+
     private Set<Role> getInitialSetOfRoles() {
         return Set.of(roleRepository.findRoleByRole(ERole.ROLE_NEWBIE)
                 .orElse(roleRepository.save(Role.builder().role(ERole.ROLE_NEWBIE).build())));
@@ -66,11 +72,11 @@ public class AuthService {
 
     private String generateVerificationToken(User user) {
         String token = UUID.randomUUID().toString();
-        VerificationToken verificationToken = new VerificationToken();
-        verificationToken.setToken(token);
-        verificationToken.setUser(user);
-        verificationToken.setExpiryDate(Instant.now().plus(Duration.ofDays(7)));
-
+        VerificationToken verificationToken = VerificationToken.builder()
+                .token(token)
+                .user(user)
+                .expiryDate(Instant.now().plus(Duration.ofDays(7)))
+                .build();
         verificationTokenRepository.save(verificationToken);
         return token;
     }
@@ -95,6 +101,6 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateJwtToken(authenticate);
-        return new AuthenticationResponse(token, loginRequest.getEmail());
+        return new AuthenticationResponse(loginRequest.getEmail(), token);
     }
 }
