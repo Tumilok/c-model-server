@@ -75,7 +75,7 @@ public class AuthService {
 
     public void verifyAccount(String token) {
         Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-        verificationToken.orElseThrow(() -> new CModelException("Invalid Verification Token"));
+        verificationToken.orElseThrow(() -> new CModelException("Invalid verification token"));
         fetchUserAndEnable(verificationToken.get());
     }
 
