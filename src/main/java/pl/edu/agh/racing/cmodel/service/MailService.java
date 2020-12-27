@@ -32,7 +32,7 @@ public class MailService {
             mailSender.send(messagePreparator);
             log.info("Activation email sent!");
         } catch (MailException e) {
-            throw new CModelException("Exception occurred while sending mail To " +
+            throw new CModelException("Exception occurred while sending mail to " +
                     notificationEmailDto.getRecipient(), e.getCause());
         }
     }
