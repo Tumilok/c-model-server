@@ -101,6 +101,6 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateJwtToken(authenticate);
-        return new AuthenticationResponse(loginRequest.getEmail(), token);
+        return new AuthenticationResponse(loginRequest.getEmail(),  token);
     }
 }
