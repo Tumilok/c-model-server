@@ -2,19 +2,21 @@ package pl.edu.agh.racing.cmodel.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
+import pl.edu.agh.racing.cmodel.security.service.UserDetailsImpl;
 
 import static io.jsonwebtoken.Jwts.parser;
 
 @Service
 public class JwtProvider {
 
+    // TODO: Move jwtSecret to the application.properties file
+
     private final String jwtSecret = "someSecretKeyVerySecretsomeSecretKeyVerySecretsomeSecretKeyVerySecretsomeSecretKeyVerySecretsomeSecretKeyVerySecret";
 
     public String generateJwtToken(Authentication authentication) {
-        User principal = (User) authentication.getPrincipal();
+        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject((principal.getUsername()))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
