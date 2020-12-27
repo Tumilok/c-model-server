@@ -17,6 +17,8 @@ public class RefreshTokenRepositoryTest {
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
+    // TODO: Fix RefreshTokenRepositoryTest
+
     @Test
     public void shouldSaveRefreshToken() {
         // given
