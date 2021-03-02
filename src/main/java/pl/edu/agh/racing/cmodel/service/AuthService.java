@@ -9,21 +9,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.racing.cmodel.dto.NotificationEmailDto;
 import pl.edu.agh.racing.cmodel.dto.request.LoginRequest;
+import pl.edu.agh.racing.cmodel.dto.request.RefreshTokenRequest;
 import pl.edu.agh.racing.cmodel.dto.request.RegisterRequest;
 import pl.edu.agh.racing.cmodel.dto.response.AuthenticationResponse;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
-import pl.edu.agh.racing.cmodel.model.ERole;
-import pl.edu.agh.racing.cmodel.model.Role;
-import pl.edu.agh.racing.cmodel.model.User;
-import pl.edu.agh.racing.cmodel.model.VerificationToken;
+import pl.edu.agh.racing.cmodel.model.*;
 import pl.edu.agh.racing.cmodel.repository.RoleRepository;
 import pl.edu.agh.racing.cmodel.repository.UserRepository;
 import pl.edu.agh.racing.cmodel.repository.VerificationTokenRepository;
+import pl.edu.agh.racing.cmodel.security.jwt.JwtConfig;
 import pl.edu.agh.racing.cmodel.security.jwt.JwtProvider;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -38,7 +39,9 @@ public class AuthService {
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final JwtConfig jwtConfig;
     private final RoleRepository roleRepository;
+    private final RefreshTokenService refreshTokenService;
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
@@ -101,6 +104,16 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateJwtToken(authenticate);
-        return new AuthenticationResponse(loginRequest.getEmail(),  token);
+        String refreshToken = refreshTokenService.generateRefreshToken().getToken();
+        Date expiresAt = Date.valueOf(LocalDate.now().plusDays(jwtConfig.getExpirationTimeInDays()));
+        return new AuthenticationResponse(loginRequest.getEmail(), token, refreshToken, expiresAt);
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+        String refreshToken = refreshTokenRequest.getRefreshToken();
+        Date expiresAt = Date.valueOf(LocalDate.now().plusDays(jwtConfig.getExpirationTimeInDays()));
+        return new AuthenticationResponse(refreshTokenRequest.getUsername(), token, refreshToken, expiresAt);
     }
 }
