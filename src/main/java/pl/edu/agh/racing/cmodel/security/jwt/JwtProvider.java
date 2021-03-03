@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.racing.cmodel.exception.CModelException;
 import pl.edu.agh.racing.cmodel.security.service.UserDetailsImpl;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+
+import static java.util.Date.from;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +28,15 @@ public class JwtProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getExpirationTimeInDays())))
                 .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes()))
+                .compact();
+    }
+
+    public String generateTokenWithUserName(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(from(Instant.now()))
+                .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes()))
+                .setExpiration(from(Instant.now().plusMillis(jwtConfig.getExpirationTimeInDays())))
                 .compact();
     }
 

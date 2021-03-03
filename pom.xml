@@ -10,9 +10,9 @@
     </parent>
     <groupId>pl.edu.agh.racing</groupId>
     <artifactId>c-model</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>c-model</name>
-    <description>Demo project for Spring Boot</description>
+    <description>C-Model app for AGH Racing Aerodynamics team</description>
 
     <properties>
         <java.version>11</java.version>
@@ -94,6 +94,20 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.2</version>
+        </dependency>
+
+        <!-- Spring Fox and Swagger dependencies. Used to document the api's -->
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
         </dependency>
 
         <!-- Spring Boot Test dependency. Used to test the app -->
