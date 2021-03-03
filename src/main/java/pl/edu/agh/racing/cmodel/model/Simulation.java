@@ -26,25 +26,25 @@ public class Simulation {
     private Long id;
 
     @NotBlank(message = "Name is required")
-    @Column(unique = true, nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String fw;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String rw;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String s;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String diff;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String u;
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String n;
 
     @Column(precision = 1)
