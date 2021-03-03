@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.racing.cmodel.dto.SimulationDto;
 import pl.edu.agh.racing.cmodel.service.SimulationService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/simulations")
 @AllArgsConstructor
@@ -18,6 +20,16 @@ public class SimulationController {
     public ResponseEntity<Void> createSimulation(@RequestBody SimulationDto simulationDto){
         simulationService.save(simulationDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SimulationDto>> getAllSimulations(){
+        return ResponseEntity.status(HttpStatus.OK).body(simulationService.getAllSimulations());
+    }
+
+    @GetMapping("/pages/{pageNumber}")
+    public ResponseEntity<List<SimulationDto>> getAllSimulationsWithPagination(@PathVariable int pageNumber){
+        return ResponseEntity.status(HttpStatus.OK).body(simulationService.getAllSimulationWithPagination(pageNumber));
     }
 
     @GetMapping("/by-id/{simulationId}")
