@@ -9,6 +9,7 @@ import pl.edu.agh.racing.cmodel.dto.request.LoginRequest;
 import pl.edu.agh.racing.cmodel.dto.request.RegisterRequest;
 import pl.edu.agh.racing.cmodel.service.AuthService;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
