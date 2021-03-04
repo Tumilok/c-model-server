@@ -1,13 +1,8 @@
 package pl.edu.agh.racing.cmodel.repository;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edu.agh.racing.cmodel.model.Simulation;
-import pl.edu.agh.racing.cmodel.model.Status;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
