@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class SimulationService {
 
-    SimulationRepository simulationRepository;
-    StatusRepository statusRepository;
-    SimulationMapper simulationMapper;
+    private final SimulationRepository simulationRepository;
+    private final StatusRepository statusRepository;
+    private final SimulationMapper simulationMapper;
 
     private final int simulationsPerPage = 20;
 

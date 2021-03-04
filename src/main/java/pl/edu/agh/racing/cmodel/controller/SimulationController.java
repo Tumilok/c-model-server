@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/simulations")
 @AllArgsConstructor
+@CrossOrigin(maxAge = 3600)
 public class SimulationController {
 
     private final SimulationService simulationService;
