@@ -69,8 +69,14 @@ public class AuthService {
     }
 
     private Set<Role> getInitialSetOfRoles() {
-        return Set.of(roleRepository.findRoleByRole(ERole.ROLE_NEWBIE)
-                .orElse(roleRepository.save(Role.builder().role(ERole.ROLE_NEWBIE).build())));
+        Optional<Role> roleOpt = roleRepository.findRoleByRole(ERole.ROLE_NEWBIE);
+        if (roleOpt.isPresent()) {
+            return Set.of(roleOpt.get());
+        } else {
+            Role role = Role.builder().role(ERole.ROLE_NEWBIE).build();
+            roleRepository.save(role);
+            return Set.of(role);
+        }
     }
 
     private String generateVerificationToken(User user) {
