@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edu.agh.racing.cmodel.model.*;
+import pl.edu.agh.racing.cmodel.model.RefreshToken;
 
 import java.time.Instant;
 
@@ -16,6 +16,8 @@ public class RefreshTokenRepositoryTest {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+
+    // TODO: Fix RefreshTokenRepositoryTest
 
     @Test
     public void shouldSaveRefreshToken() {

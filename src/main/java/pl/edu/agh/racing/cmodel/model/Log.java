@@ -1,15 +1,17 @@
 package pl.edu.agh.racing.cmodel.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -20,11 +22,9 @@ public class Log {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "operation_id", referencedColumnName = "id")
     private Operation operation;
-
-    @NotNull
-    private Instant createdDate;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,4 +35,7 @@ public class Log {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @CreationTimestamp
+    private Instant createdDate;
 }

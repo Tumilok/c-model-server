@@ -1,14 +1,17 @@
 package pl.edu.agh.racing.cmodel.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,6 +24,6 @@ public class RefreshToken {
     @NotNull
     private String token;
 
-    @NotNull
-    private Instant createdDate;
+    @CreationTimestamp
+    private Instant createDateTime;
 }

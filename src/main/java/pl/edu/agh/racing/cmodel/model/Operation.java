@@ -1,27 +1,30 @@
 package pl.edu.agh.racing.cmodel.model;
 
-import java.util.stream.Stream;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public enum  Operation {
-    ADD ("ADD"),
-    UPDATE ("UPDATE"),
-    DELETE ("DELETE"),
-    ;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
-    private final String operation;
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Operation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(unique = true, updatable = false)
+    private Long id;
 
-    Operation(String operation) {
-        this.operation = operation;
-    }
+    @NotBlank(message = "Operation is required")
+    @Enumerated(EnumType.STRING)
+    private EOperation operation;
 
-    public String getOperation() {
-        return operation;
-    }
-
-    public static Operation of(String operation) {
-        return Stream.of(Operation.values())
-                .filter(o -> o.getOperation().equals(operation))
-                .findFirst()
-                .orElseThrow(IllegalAccessError::new);
-    }
+    @OneToMany(mappedBy = "operation")
+    private Set<Log> logs = new HashSet<>();
 }
